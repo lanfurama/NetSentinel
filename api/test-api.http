@@ -1,0 +1,118 @@
+### NetSentinel API Test Requests
+
+### Health Check
+GET http://localhost:3001/health
+
+### Get All Devices
+GET http://localhost:3001/api/devices
+
+### Get Devices by Status
+GET http://localhost:3001/api/devices?status=ONLINE
+
+### Get Devices by Type
+GET http://localhost:3001/api/devices?type=SERVER
+
+### Get Device by ID
+GET http://localhost:3001/api/devices/{{deviceId}}
+
+### Create Device
+POST http://localhost:3001/api/devices
+Content-Type: application/json
+
+{
+  "name": "Test Server",
+  "ip": "192.168.1.99",
+  "type": "SERVER",
+  "status": "ONLINE",
+  "cpuUsage": 45.5,
+  "memoryUsage": 62.3,
+  "temperature": 42.5,
+  "uptime": 86400,
+  "location": "Data Center A",
+  "snmpConfig": {
+    "version": "v2c",
+    "community": "public",
+    "port": 161,
+    "timeout": 5000
+  }
+}
+
+### Update Device
+PATCH http://localhost:3001/api/devices/{{deviceId}}
+Content-Type: application/json
+
+{
+  "status": "WARNING",
+  "cpuUsage": 85.5
+}
+
+### Delete Device
+DELETE http://localhost:3001/api/devices/{{deviceId}}
+
+### Get All Alerts
+GET http://localhost:3001/api/alerts
+
+### Get Unacknowledged Alerts
+GET http://localhost:3001/api/alerts?acknowledged=false
+
+### Get Critical Alerts
+GET http://localhost:3001/api/alerts?severity=critical
+
+### Get Alert by ID
+GET http://localhost:3001/api/alerts/{{alertId}}
+
+### Create Alert
+POST http://localhost:3001/api/alerts
+Content-Type: application/json
+
+{
+  "deviceId": "{{deviceId}}",
+  "deviceName": "Test Server",
+  "message": "High CPU usage detected",
+  "severity": "warning"
+}
+
+### Acknowledge Alert
+PATCH http://localhost:3001/api/alerts/{{alertId}}/acknowledge
+Content-Type: application/json
+
+{
+  "acknowledgedBy": "admin"
+}
+
+### Delete Alert
+DELETE http://localhost:3001/api/alerts/{{alertId}}
+
+### Get All Users
+GET http://localhost:3001/api/users
+
+### Get Users by Role
+GET http://localhost:3001/api/users?role=admin
+
+### Get User by Username
+GET http://localhost:3001/api/users/admin
+
+### Create User
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "fullName": "Test User",
+  "role": "viewer"
+}
+
+### Update User
+PATCH http://localhost:3001/api/users/testuser
+Content-Type: application/json
+
+{
+  "role": "admin"
+}
+
+### Delete User
+DELETE http://localhost:3001/api/users/testuser
+
+### Get System Stats
+GET http://localhost:3001/api/stats
+

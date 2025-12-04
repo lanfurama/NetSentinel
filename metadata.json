@@ -1,0 +1,5 @@
+{
+  "name": "NetSentinel",
+  "description": "A comprehensive network monitoring dashboard for tracking server health, PC status, and network devices via simulated SNMP/IP checks. Features AI-powered anomaly detection and real-time alerts.",
+  "requestFramePermissions": []
+}
