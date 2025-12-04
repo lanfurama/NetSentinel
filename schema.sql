@@ -5,6 +5,8 @@
 SET client_min_messages TO WARNING;
 
 -- Drop existing objects if they exist (for clean setup)
+DROP TABLE IF EXISTS chat_messages CASCADE;
+DROP TABLE IF EXISTS chat_conversations CASCADE;
 DROP TABLE IF EXISTS alerts CASCADE;
 DROP TABLE IF EXISTS devices CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
@@ -66,6 +68,26 @@ CREATE TABLE alerts (
     CONSTRAINT fk_alert_user FOREIGN KEY (acknowledged_by) REFERENCES users(username) ON DELETE SET NULL
 );
 
+-- Create Chat Conversations table
+CREATE TABLE chat_conversations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id VARCHAR(100) NOT NULL,
+    title VARCHAR(255),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_chat_user FOREIGN KEY (user_id) REFERENCES users(username) ON DELETE CASCADE
+);
+
+-- Create Chat Messages table
+CREATE TABLE chat_messages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    conversation_id UUID NOT NULL,
+    role VARCHAR(20) NOT NULL CHECK (role IN ('user', 'model')),
+    content TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_message_conversation FOREIGN KEY (conversation_id) REFERENCES chat_conversations(id) ON DELETE CASCADE
+);
+
 -- Create indexes for better query performance
 CREATE INDEX idx_devices_status ON devices(status);
 CREATE INDEX idx_devices_type ON devices(type);
@@ -76,6 +98,10 @@ CREATE INDEX idx_alerts_severity ON alerts(severity);
 CREATE INDEX idx_alerts_acknowledged ON alerts(acknowledged);
 CREATE INDEX idx_alerts_timestamp ON alerts(timestamp DESC);
 CREATE INDEX idx_users_role ON users(role);
+CREATE INDEX idx_chat_conversations_user ON chat_conversations(user_id);
+CREATE INDEX idx_chat_conversations_updated ON chat_conversations(updated_at DESC);
+CREATE INDEX idx_chat_messages_conversation ON chat_messages(conversation_id);
+CREATE INDEX idx_chat_messages_created ON chat_messages(created_at);
 
 -- Create GIN index for JSONB snmp_config queries
 CREATE INDEX idx_devices_snmp_config ON devices USING GIN (snmp_config);

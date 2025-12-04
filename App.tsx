@@ -460,6 +460,7 @@ const App: React.FC = () => {
             onClose={() => setIsChatOpen(false)}
             devices={devices}
             alerts={alerts}
+            currentUser={currentUser}
             initialContext={chatInitialContext}
          />
 

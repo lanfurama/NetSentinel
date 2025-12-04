@@ -175,6 +175,37 @@ class ApiService {
       avgCpuLoad: number;
     }>('/stats');
   }
+
+  // Chat endpoints
+  async getConversations(userId: string) {
+    const query = new URLSearchParams();
+    query.append('userId', userId);
+    return this.request<any[]>('/chat/conversations' + `?${query.toString()}`);
+  }
+
+  async getConversationById(id: string) {
+    return this.request<any>(`/chat/conversations/${id}`);
+  }
+
+  async createConversation(userId: string, title?: string) {
+    return this.request<any>('/chat/conversations', {
+      method: 'POST',
+      body: JSON.stringify({ userId, title }),
+    });
+  }
+
+  async addMessage(conversationId: string, role: 'user' | 'model', content: string) {
+    return this.request<any>(`/chat/conversations/${conversationId}/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ role, content }),
+    });
+  }
+
+  async deleteConversation(id: string) {
+    return this.request<void>(`/chat/conversations/${id}`, {
+      method: 'DELETE',
+    });
+  }
 }
 
 export const apiService = new ApiService();

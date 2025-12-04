@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GenerateContentResponse, Chat } from "@google/genai";
-import { Device, Alert } from '../types';
+import { Device, Alert, User } from '../types';
 import { createChatSession, sendMessageStream } from '../services/geminiService';
+import apiService from '../services/apiService';
 import { MessageSquare, Send, X, Minimize2, Brain, ChevronRight, RefreshCw } from './Icons';
 
 interface ChatAssistantProps {
@@ -9,6 +10,7 @@ interface ChatAssistantProps {
   onClose: () => void;
   devices: Device[];
   alerts: Alert[];
+  currentUser: User | null;
   initialContext?: string; // Pre-filled message from other components
 }
 
@@ -19,19 +21,56 @@ interface Message {
   isStreaming?: boolean;
 }
 
-const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, devices, alerts, initialContext }) => {
+const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, devices, alerts, currentUser, initialContext }) => {
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', role: 'model', text: 'Hello! I am NetSentinel AI. I can help you troubleshoot alerts, analyze imports, or check system health.' }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [chatSession, setChatSession] = useState<Chat | null>(null);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initialize Chat Session
   useEffect(() => {
     setChatSession(createChatSession());
   }, []);
+
+  // Create new conversation when opening (if no conversation exists)
+  useEffect(() => {
+    if (isOpen && currentUser && !conversationId && !isLoadingHistory) {
+      createNewConversation();
+    }
+  }, [isOpen, currentUser]);
+
+  const createNewConversation = async () => {
+    if (!currentUser) return;
+    
+    try {
+      const response = await apiService.createConversation(currentUser.username);
+      if (response.success && response.data) {
+        setConversationId(response.data.id);
+        // Reset messages to initial greeting
+        setMessages([
+          { id: '1', role: 'model', text: 'Hello! I am NetSentinel AI. I can help you troubleshoot alerts, analyze imports, or check system health.' }
+        ]);
+      }
+    } catch (error) {
+      console.error('Failed to create conversation:', error);
+      // Continue without saving if API fails
+    }
+  };
+
+  // Reset conversation when closing
+  useEffect(() => {
+    if (!isOpen) {
+      setConversationId(null);
+      setMessages([
+        { id: '1', role: 'model', text: 'Hello! I am NetSentinel AI. I can help you troubleshoot alerts, analyze imports, or check system health.' }
+      ]);
+    }
+  }, [isOpen]);
 
   // Handle Initial Context (e.g., from Admin Panel error)
   useEffect(() => {
@@ -55,6 +94,15 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, devices,
     setMessages(prev => [...prev, { id: userMsgId, role: 'user', text: text }]);
     setInput('');
     setIsTyping(true);
+
+    // Save user message to database
+    if (conversationId) {
+      try {
+        await apiService.addMessage(conversationId, 'user', text);
+      } catch (error) {
+        console.error('Failed to save user message:', error);
+      }
+    }
 
     try {
       // 2. Add Placeholder AI Message
@@ -84,6 +132,15 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, devices,
       setMessages(prev => prev.map(msg => 
         msg.id === aiMsgId ? { ...msg, isStreaming: false } : msg
       ));
+
+      // Save AI response to database
+      if (conversationId && fullText) {
+        try {
+          await apiService.addMessage(conversationId, 'model', fullText);
+        } catch (error) {
+          console.error('Failed to save AI message:', error);
+        }
+      }
 
     } catch (error) {
       console.error("Chat Error:", error);

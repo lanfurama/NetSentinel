@@ -6,6 +6,7 @@ import alertsRoutes from './routes/alerts.js';
 import usersRoutes from './routes/users.js';
 import statsRoutes from './routes/stats.js';
 import authRoutes from './routes/auth.js';
+import chatRoutes from './routes/chat.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
@@ -33,6 +34,7 @@ app.use('/api/devices', devicesRoutes);
 app.use('/api/alerts', alertsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Error handling
 app.use(notFoundHandler);
