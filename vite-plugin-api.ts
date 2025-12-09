@@ -13,7 +13,7 @@ export function vitePluginApi(): Plugin {
     name: 'vite-plugin-api',
     configureServer(server) {
       // Khởi động Express server trên port 3001 (chạy ngầm)
-      const apiCwd = path.join(__dirname, 'api');
+      const apiCwd = path.join(__dirname, 'server');
       const apiServerPath = path.join('src', 'server-app.ts');
       
       console.log('🚀 Đang khởi động API server...');

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:api": "cd api && tsx watch src/server.ts",
+    "dev:api": "cd server && tsx watch src/server.ts",
     "build": "vite build",
     "preview": "vite preview"
   },
