@@ -1,70 +1,41 @@
 import type { Plugin } from 'vite';
-import { spawn, ChildProcess } from 'child_process';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { createServer } from './server/src/server-app.js';
 
 export function vitePluginApi(): Plugin {
-  let apiProcess: ChildProcess | null = null;
-  
   return {
     name: 'vite-plugin-api',
     configureServer(server) {
-      // Khởi động Express server trên port 3001 (chạy ngầm)
-      const apiCwd = path.join(__dirname, 'server');
-      const apiServerPath = path.join('src', 'server-app.ts');
+      // Tích hợp Express app trực tiếp vào Vite middleware
+      const expressApp = createServer();
       
-      console.log('🚀 Đang khởi động API server...');
+      console.log('✅ API server đã được tích hợp vào Vite dev server');
+      console.log('📊 API endpoints: http://localhost:3000/api/v1/...');
       
-      // Sử dụng đường dẫn tương đối và cwd để tránh lỗi với khoảng trắng trong đường dẫn
-      apiProcess = spawn('npx', ['tsx', 'watch', apiServerPath], {
-        cwd: apiCwd,
-        stdio: 'pipe',
-        shell: true,
-        env: { ...process.env, PORT: '3001' },
-      });
-      
-      apiProcess.stdout?.on('data', (data) => {
-        const output = data.toString().trim();
-        if (output) {
-          console.log(`[API] ${output}`);
+      // Middleware để xử lý API requests
+      // Mount Express app tại root để nó nhận được full path
+      server.middlewares.use((req, res, next) => {
+        // Chỉ xử lý requests bắt đầu với /api
+        if (req.url?.startsWith('/api')) {
+          // Log để debug
+          console.log(`[API Request] ${req.method} ${req.url}`);
+          
+          // Express app sẽ nhận được full path bao gồm /api
+          expressApp(req as any, res as any, (err?: any) => {
+            if (err) {
+              console.error('[API Error]', err);
+              next(err);
+            } else {
+              // Nếu Express đã xử lý response, không gọi next()
+              if (!res.headersSent) {
+                next();
+              }
+            }
+          });
+        } else {
+          // Không phải API request, pass qua Vite
+          next();
         }
       });
-      
-      apiProcess.stderr?.on('data', (data) => {
-        const output = data.toString().trim();
-        if (output && !output.includes('DeprecationWarning')) {
-          console.error(`[API Error] ${output}`);
-        }
-      });
-      
-      apiProcess.on('exit', (code) => {
-        if (code !== null && code !== 0) {
-          console.error(`[API] Process exited with code ${code}`);
-        }
-      });
-      
-      // Đợi API server sẵn sàng
-      setTimeout(() => {
-        console.log('✅ API server đã sẵn sàng');
-        console.log('📊 API endpoints: http://localhost:3000/api/v1/...');
-      }, 2000);
-    },
-    buildEnd() {
-      // Dừng API server khi build xong
-      if (apiProcess) {
-        apiProcess.kill();
-        apiProcess = null;
-      }
-    },
-    closeBundle() {
-      // Dừng API server khi close
-      if (apiProcess) {
-        apiProcess.kill();
-        apiProcess = null;
-      }
     },
   };
 }

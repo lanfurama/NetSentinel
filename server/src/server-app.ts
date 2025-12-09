@@ -43,8 +43,9 @@ export function createServer() {
   return app;
 }
 
-// Chỉ start server khi không phải Vercel serverless function và chạy trực tiếp
-if (process.env.VERCEL !== '1') {
+// Chỉ start server khi chạy trực tiếp file này (không phải Vercel và không phải khi được import)
+// Kiểm tra bằng cách xem có environment variable RUN_SERVER được set không
+if (process.env.VERCEL !== '1' && process.env.RUN_SERVER === 'true') {
   const PORT = process.env.PORT || 3001;
   const app = createServer();
   
