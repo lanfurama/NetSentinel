@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/check-api.js",
     "dev": "vite",
     "dev:api": "cd api && tsx watch src/server.ts",
     "build": "vite build",

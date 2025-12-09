@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Device, DeviceType, DeviceStatus, SnmpVersion, AVAILABLE_LOCATIONS } from '../types';
+import { apiService } from '../services/apiService';
 import { 
   Server, Shield, Globe, Lock, Save, Radio, CheckCircle, XCircle, 
   RotateCw, Monitor, Wifi, Settings, FileDown, FileUp, FileSpreadsheet, UploadCloud, Trash2, Brain,
@@ -64,7 +65,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onAddDevice, onAskAi }) => {
 
   // --- Manual Add Logic ---
 
-  const handleTestConnection = () => {
+  const handleTestConnection = async () => {
     if (!formData.ip) {
       setTestStatus('error');
       setStatusMessage('IP Address is required');
@@ -73,22 +74,30 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onAddDevice, onAskAi }) => {
 
     setLoading(true);
     setTestStatus('idle');
-    setStatusMessage('Sending SNMP GET (sysDescr)...');
+    setStatusMessage('Testing SNMP connection...');
 
-    // TODO: Replace with actual SNMP test API call
-    // For now, this is a simulation - in production, call backend API to test SNMP connection
-    setTimeout(() => {
+    try {
+      const snmpConfig = {
+        version: formData.snmpVersion,
+        port: formData.snmpPort,
+        community: formData.snmpVersion !== SnmpVersion.V3 ? formData.snmpCommunity : undefined,
+        username: formData.snmpVersion === SnmpVersion.V3 ? formData.snmpUser : undefined,
+        authProtocol: formData.snmpVersion === SnmpVersion.V3 ? formData.snmpAuth : undefined,
+        privProtocol: formData.snmpVersion === SnmpVersion.V3 ? formData.snmpPriv : undefined,
+        timeout: 5000,
+      };
+
+      const response = await apiService.testSnmpConnection(formData.ip, snmpConfig);
+      
       setLoading(false);
-      // Simulated test - replace with actual API call: apiService.testSnmpConnection(formData)
-      const isSuccess = Math.random() > 0.1; // 90% success rate simulation
-      if (isSuccess) {
-        setTestStatus('success');
-        setStatusMessage('Connection Established. Device responded: Linux Server 5.15.0-generic');
-      } else {
-        setTestStatus('error');
-        setStatusMessage('Timeout: No response from ' + formData.ip + ' on port ' + formData.snmpPort);
-      }
-    }, 1500);
+      setTestStatus('success');
+      setStatusMessage(`✅ ${response.data.message || 'Connection successful'}`);
+    } catch (error: any) {
+      setLoading(false);
+      setTestStatus('error');
+      const errorMessage = error.message || `Failed to connect to ${formData.ip} on port ${formData.snmpPort}`;
+      setStatusMessage(`❌ ${errorMessage}`);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
