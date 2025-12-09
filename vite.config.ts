@@ -14,9 +14,12 @@ export default defineConfig(({ mode }) => {
         react(),
         vitePluginApi(),
       ],
+      // Expose environment variables to browser (must start with VITE_)
+      envPrefix: 'VITE_',
       define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+        // For backward compatibility
+        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY),
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY),
       },
       resolve: {
         alias: {
