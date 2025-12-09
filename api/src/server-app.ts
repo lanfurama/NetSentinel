@@ -43,11 +43,13 @@ export function createServer() {
   return app;
 }
 
-// Luôn start server khi file này được chạy trực tiếp
-const PORT = process.env.PORT || 3001;
-const app = createServer();
-
-app.listen(PORT, () => {
-  console.log(`🚀 API Server running on http://localhost:${PORT}`);
-  console.log(`📊 API endpoints available at http://localhost:${PORT}/api/v1`);
-});
+// Chỉ start server khi không phải Vercel serverless function và chạy trực tiếp
+if (process.env.VERCEL !== '1') {
+  const PORT = process.env.PORT || 3001;
+  const app = createServer();
+  
+  app.listen(PORT, () => {
+    console.log(`🚀 API Server running on http://localhost:${PORT}`);
+    console.log(`📊 API endpoints available at http://localhost:${PORT}/api/v1`);
+  });
+}
