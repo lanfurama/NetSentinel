@@ -2,11 +2,16 @@ import type { Plugin } from 'vite';
 import { createServer } from './server/src/server-app.js';
 
 export function vitePluginApi(): Plugin {
+  let expressAppPromise: Promise<any> | null = null;
+
   return {
     name: 'vite-plugin-api',
-    configureServer(server) {
+    async configureServer(server) {
       // Tích hợp Express app trực tiếp vào Vite middleware
-      const expressApp = createServer();
+      if (!expressAppPromise) {
+        expressAppPromise = createServer();
+      }
+      const expressApp = await expressAppPromise;
       
       console.log('✅ API server đã được tích hợp vào Vite dev server');
       console.log('📊 API endpoints: http://localhost:3000/api/v1/...');

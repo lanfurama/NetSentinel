@@ -189,32 +189,29 @@ class ApiService {
   }
 
   // Chat endpoints
-  async getConversations(userId: string) {
+  async getMessages(userId: string) {
     const query = new URLSearchParams();
     query.append('userId', userId);
-    return this.request<any[]>('/chat/conversations' + `?${query.toString()}`);
+    return this.request<any[]>('/chat/messages' + `?${query.toString()}`);
   }
 
-  async getConversationById(id: string) {
-    return this.request<any>(`/chat/conversations/${id}`);
-  }
-
-  async createConversation(userId: string, title?: string) {
-    return this.request<any>('/chat/conversations', {
+  async addMessage(userId: string, role: 'user' | 'model', content: string) {
+    return this.request<any>('/chat/messages', {
       method: 'POST',
-      body: JSON.stringify({ userId, title }),
+      body: JSON.stringify({ userId, role, content }),
     });
   }
 
-  async addMessage(conversationId: string, role: 'user' | 'model', content: string) {
-    return this.request<any>(`/chat/conversations/${conversationId}/messages`, {
-      method: 'POST',
-      body: JSON.stringify({ role, content }),
+  async deleteMessage(id: string) {
+    return this.request<void>(`/chat/messages/${id}`, {
+      method: 'DELETE',
     });
   }
 
-  async deleteConversation(id: string) {
-    return this.request<void>(`/chat/conversations/${id}`, {
+  async deleteAllMessages(userId: string) {
+    const query = new URLSearchParams();
+    query.append('userId', userId);
+    return this.request<void>('/chat/messages' + `?${query.toString()}`, {
       method: 'DELETE',
     });
   }

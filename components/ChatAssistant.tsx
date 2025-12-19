@@ -21,6 +21,93 @@ interface Message {
   isStreaming?: boolean;
 }
 
+// Helper function to parse error messages and return user-friendly text
+const parseErrorMessage = (error: unknown): string => {
+  try {
+    // If it's an Error object, try to parse the message
+    if (error instanceof Error) {
+      const errorMessage = error.message;
+      
+      // Try to parse JSON error message
+      try {
+        const parsed = JSON.parse(errorMessage);
+        if (parsed?.error) {
+          // Handle Gemini API errors
+          const apiError = parsed.error;
+          
+          // API key errors
+          if (apiError.message?.includes('API key') || apiError.message?.includes('INVALID_ARGUMENT') || apiError.code === 400) {
+            return "⚠️ **API Configuration Error**\n\nI'm unable to connect to the AI service. Please check that the API key is properly configured in the system settings.\n\nIf you're an administrator, please verify the `VITE_GEMINI_API_KEY` environment variable is set correctly.";
+          }
+          
+          // Rate limit errors
+          if (apiError.code === 429 || apiError.message?.includes('rate limit') || apiError.message?.includes('quota')) {
+            return "⏱️ **Service Temporarily Unavailable**\n\nThe AI service is currently experiencing high demand. Please try again in a few moments.";
+          }
+          
+          // Permission errors
+          if (apiError.code === 403 || apiError.message?.includes('permission') || apiError.message?.includes('forbidden')) {
+            return "🔒 **Access Denied**\n\nI don't have permission to access the AI service. Please contact your administrator.";
+          }
+          
+          // Return a clean message if we can extract it
+          if (apiError.message && typeof apiError.message === 'string') {
+            // Check if message is another JSON string
+            try {
+              const nestedParsed = JSON.parse(apiError.message);
+              if (nestedParsed?.error?.message) {
+                const nestedMessage = nestedParsed.error.message;
+                if (nestedMessage.includes('API key')) {
+                  return "⚠️ **API Configuration Error**\n\nI'm unable to connect to the AI service. Please check that the API key is properly configured in the system settings.\n\nIf you're an administrator, please verify the `VITE_GEMINI_API_KEY` environment variable is set correctly.";
+                }
+                return `⚠️ **Service Error**\n\n${nestedMessage}`;
+              }
+            } catch {
+              // Not nested JSON, use the message directly
+            }
+            return `⚠️ **Service Error**\n\n${apiError.message}`;
+          }
+        }
+      } catch {
+        // Not JSON, check for common error patterns in the message string
+        if (errorMessage.includes('API key') || errorMessage.includes('API key not valid')) {
+          return "⚠️ **API Configuration Error**\n\nI'm unable to connect to the AI service. Please check that the API key is properly configured.";
+        }
+        
+        if (errorMessage.includes('network') || errorMessage.includes('fetch') || errorMessage.includes('Connection')) {
+          return "🌐 **Connection Error**\n\nI'm unable to connect to the AI service. Please check your internet connection and try again.";
+        }
+        
+        if (errorMessage.includes('timeout')) {
+          return "⏱️ **Request Timeout**\n\nThe request took too long to process. Please try again.";
+        }
+      }
+      
+      // Fallback: return a generic message
+      return "⚠️ **Service Unavailable**\n\nI'm experiencing technical difficulties. Please try again in a moment.\n\nIf the problem persists, please contact your system administrator.";
+    }
+    
+    // If it's a string
+    if (typeof error === 'string') {
+      try {
+        const parsed = JSON.parse(error);
+        return parseErrorMessage(parsed);
+      } catch {
+        if (error.includes('API key')) {
+          return "⚠️ **API Configuration Error**\n\nI'm unable to connect to the AI service. Please check that the API key is properly configured.";
+        }
+        return "⚠️ **Error**\n\nAn unexpected error occurred. Please try again.";
+      }
+    }
+    
+    // Default fallback
+    return "⚠️ **Service Unavailable**\n\nI'm unable to process your request at the moment. Please try again later.";
+  } catch {
+    // Ultimate fallback
+    return "⚠️ **Connection Error**\n\nPlease try again in a moment.";
+  }
+};
+
 const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, devices, alerts, currentUser, initialContext }) => {
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', role: 'model', text: 'Hello! I am NetSentinel AI. I can help you troubleshoot alerts, analyze imports, or check system health.' }
@@ -28,7 +115,6 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, devices,
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [chatSession, setChatSession] = useState<Chat | null>(null);
-  const [conversationId, setConversationId] = useState<string | null>(null);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -37,40 +123,44 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, devices,
     setChatSession(createChatSession());
   }, []);
 
-  // Create new conversation when opening (if no conversation exists)
+  // Load messages when opening
   useEffect(() => {
-    if (isOpen && currentUser && !conversationId && !isLoadingHistory) {
-      createNewConversation();
+    if (isOpen && currentUser && !isLoadingHistory) {
+      loadMessages();
     }
   }, [isOpen, currentUser]);
 
-  const createNewConversation = async () => {
+  const loadMessages = async () => {
     if (!currentUser) return;
     
+    setIsLoadingHistory(true);
     try {
-      const response = await apiService.createConversation(currentUser.username);
-      if (response.success && response.data) {
-        setConversationId(response.data.id);
-        // Reset messages to initial greeting
+      const response = await apiService.getMessages(currentUser.username);
+      
+      if (response.success && response.data && response.data.length > 0) {
+        const loadedMessages = response.data.map((msg: any) => ({
+          id: msg.id,
+          role: msg.role,
+          text: msg.content,
+          isStreaming: false
+        }));
+        setMessages(loadedMessages);
+      } else {
+        // No messages, show greeting
         setMessages([
           { id: '1', role: 'model', text: 'Hello! I am NetSentinel AI. I can help you troubleshoot alerts, analyze imports, or check system health.' }
         ]);
       }
     } catch (error) {
-      console.error('Failed to create conversation:', error);
-      // Continue without saving if API fails
-    }
-  };
-
-  // Reset conversation when closing
-  useEffect(() => {
-    if (!isOpen) {
-      setConversationId(null);
+      console.error('Failed to load messages:', error);
+      // If loading fails, show greeting
       setMessages([
         { id: '1', role: 'model', text: 'Hello! I am NetSentinel AI. I can help you troubleshoot alerts, analyze imports, or check system health.' }
       ]);
+    } finally {
+      setIsLoadingHistory(false);
     }
-  }, [isOpen]);
+  };
 
   // Handle Initial Context (e.g., from Admin Panel error)
   useEffect(() => {
@@ -96,9 +186,9 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, devices,
     setIsTyping(true);
 
     // Save user message to database
-    if (conversationId) {
+    if (currentUser) {
       try {
-        await apiService.addMessage(conversationId, 'user', text);
+        await apiService.addMessage(currentUser.username, 'user', text);
       } catch (error) {
         console.error('Failed to save user message:', error);
       }
@@ -121,6 +211,8 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, devices,
       let fullText = '';
       for await (const chunk of result) {
         const c = chunk as GenerateContentResponse;
+        // Extract text from response
+        // GenerateContentResponse.text is a getter that returns string
         const chunkText = c.text || '';
         fullText += chunkText;
         
@@ -133,20 +225,48 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, devices,
         msg.id === aiMsgId ? { ...msg, isStreaming: false } : msg
       ));
 
-      // Save AI response to database
-      if (conversationId && fullText) {
+      // Save AI response to database (after stream completes)
+      if (currentUser && fullText && fullText.trim().length > 0) {
         try {
-          await apiService.addMessage(conversationId, 'model', fullText);
+          console.log('💾 Saving AI message to database:', { length: fullText.length, preview: fullText.substring(0, 50) });
+          const response = await apiService.addMessage(currentUser.username, 'model', fullText);
+          if (response.success) {
+            console.log('✅ AI message saved successfully');
+          } else {
+            console.error('❌ Failed to save AI message:', response);
+          }
         } catch (error) {
-          console.error('Failed to save AI message:', error);
+          console.error('❌ Failed to save AI message:', error);
         }
+      } else {
+        console.warn('⚠️ Not saving AI message:', { 
+          hasUser: !!currentUser, 
+          hasText: !!fullText, 
+          textLength: fullText?.length || 0 
+        });
       }
 
     } catch (error) {
       console.error("Chat Error:", error);
+      
+      // Parse error and create user-friendly message
+      const userFriendlyMessage = parseErrorMessage(error);
+      
+      // Update UI with user-friendly error message
       setMessages(prev => prev.map(msg => 
-        msg.id === aiMsgId ? { ...msg, text: "Connection error. Please try again.", isStreaming: false } : msg
+        msg.id === aiMsgId ? { ...msg, text: userFriendlyMessage, isStreaming: false } : msg
       ));
+
+      // Save error message to database
+      if (currentUser) {
+        try {
+          console.log('💾 Saving AI error message to database');
+          await apiService.addMessage(currentUser.username, 'model', userFriendlyMessage);
+          console.log('✅ AI error message saved successfully');
+        } catch (saveError) {
+          console.error('❌ Failed to save AI error message:', saveError);
+        }
+      }
     } finally {
       setIsTyping(false);
     }

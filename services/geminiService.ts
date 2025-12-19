@@ -2,10 +2,17 @@ import { GoogleGenAI, GenerateContentResponse, Chat } from "@google/genai";
 import { Device, Alert } from '../types';
 
 // Use import.meta.env for Vite environment variables (browser-compatible)
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
+// Also check process.env for backward compatibility (defined in vite.config.ts)
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY 
+  || import.meta.env.GEMINI_API_KEY 
+  || (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY)
+  || (typeof process !== 'undefined' && process.env?.VITE_GEMINI_API_KEY);
+
 if (!apiKey) {
   console.warn('GEMINI_API_KEY is not set. AI features will not work.');
+  console.warn('Please set VITE_GEMINI_API_KEY in your .env file');
 }
+
 const ai = new GoogleGenAI({ apiKey: apiKey || '' });
 
 // System Instruction for the Chat Assistant

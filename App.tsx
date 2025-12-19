@@ -330,6 +330,19 @@ const App: React.FC = () => {
              </div>
           </div>
         )}
+
+        {/* Kiosk Mode Logout Button */}
+        {isKioskActive && (
+          <div className="p-2 border-t border-slate-800">
+            <button 
+              onClick={handleLogout}
+              className="w-full bg-red-900/20 hover:bg-red-900/40 border border-red-900/50 text-red-400 p-2 rounded-lg transition-colors flex items-center justify-center"
+              title="Exit Kiosk Mode & Logout"
+            >
+              <LogOut className="w-5 h-5" />
+            </button>
+          </div>
+        )}
       </aside>
 
       {/* Main Content Area */}

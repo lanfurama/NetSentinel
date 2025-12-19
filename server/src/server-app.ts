@@ -8,10 +8,14 @@ import statsRoutes from './routes/stats.js';
 import authRoutes from './routes/auth.js';
 import chatRoutes from './routes/chat.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import { ensureChatTablesExist } from './db/init-chat-tables.js';
 
 dotenv.config();
 
-export function createServer() {
+export async function createServer() {
+  // Ensure chat tables exist before starting server
+  await ensureChatTablesExist();
+
   const app = express();
 
   // Middleware
@@ -47,10 +51,13 @@ export function createServer() {
 // Kiểm tra bằng cách xem có environment variable RUN_SERVER được set không
 if (process.env.VERCEL !== '1' && process.env.RUN_SERVER === 'true') {
   const PORT = process.env.PORT || 3001;
-  const app = createServer();
-  
-  app.listen(PORT, () => {
-    console.log(`🚀 API Server running on http://localhost:${PORT}`);
-    console.log(`📊 API endpoints available at http://localhost:${PORT}/api/v1`);
+  createServer().then((app) => {
+    app.listen(PORT, () => {
+      console.log(`🚀 API Server running on http://localhost:${PORT}`);
+      console.log(`📊 API endpoints available at http://localhost:${PORT}/api/v1`);
+    });
+  }).catch((error) => {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
   });
 }
