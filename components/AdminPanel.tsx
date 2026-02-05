@@ -316,9 +316,9 @@ Please analyze the structure and content. Look for:
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Left Column: Manual Add (takes up 2/3 on large screens) */}
-        <div className="lg:col-span-2 bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-xl h-fit">
+        <div className="lg:col-span-2 bg-slate-800 rounded-lg p-5 border border-slate-700 shadow-xl h-fit">
           <div className="flex items-center gap-4 border-b border-slate-700 pb-6 mb-6">
-            <div className="p-3 bg-blue-600 rounded-lg shadow-lg">
+            <div className="p-3 bg-blue-600 rounded-md shadow-lg">
               <Settings className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -340,7 +340,7 @@ Please analyze the structure and content. Look for:
                     required
                     type="text" 
                     placeholder="e.g., CORE-SW-01"
-                    className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                    className="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
                     value={formData.name}
                     onChange={e => setFormData({...formData, name: e.target.value})}
                   />
@@ -351,7 +351,7 @@ Please analyze the structure and content. Look for:
                     required
                     type="text" 
                     placeholder="e.g., 192.168.1.1"
-                    className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all font-mono text-sm"
+                    className="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all font-mono text-sm"
                     value={formData.ip}
                     onChange={e => setFormData({...formData, ip: e.target.value})}
                   />
@@ -359,7 +359,7 @@ Please analyze the structure and content. Look for:
                 <div className="space-y-1">
                   <label className="text-xs font-medium text-slate-400">Location</label>
                   <select 
-                    className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                    className="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
                     value={formData.location}
                     onChange={e => setFormData({...formData, location: e.target.value})}
                   >
@@ -371,7 +371,7 @@ Please analyze the structure and content. Look for:
                 <div className="space-y-1">
                   <label className="text-xs font-medium text-slate-400">Type</label>
                   <select
-                    className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                    className="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
                     value={formData.type}
                     onChange={e => setFormData({...formData, type: e.target.value as DeviceType})}
                   >
@@ -392,12 +392,12 @@ Please analyze the structure and content. Look for:
                 <Shield className="w-4 h-4" /> SNMP Details
               </h3>
               
-              <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-700 space-y-4">
+              <div className="bg-slate-900/50 p-4 rounded-lg border border-slate-700 space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="col-span-1 space-y-1">
                     <label className="text-xs font-medium text-slate-400">Version</label>
                     <select 
-                      className="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+                      className="w-full bg-slate-800 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
                       value={formData.snmpVersion}
                       onChange={e => setFormData({...formData, snmpVersion: e.target.value as SnmpVersion})}
                     >
@@ -410,7 +410,7 @@ Please analyze the structure and content. Look for:
                     <label className="text-xs font-medium text-slate-400">Port</label>
                     <input 
                       type="number" 
-                      className="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+                      className="w-full bg-slate-800 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
                       value={formData.snmpPort}
                       onChange={e => setFormData({...formData, snmpPort: parseInt(e.target.value)})}
                     />
@@ -421,7 +421,7 @@ Please analyze the structure and content. Look for:
                        <label className="text-xs font-medium text-slate-400">Community String</label>
                        <input 
                          type="text" 
-                         className="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-mono"
+                         className="w-full bg-slate-800 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-mono"
                          value={formData.snmpCommunity}
                          onChange={e => setFormData({...formData, snmpCommunity: e.target.value})}
                        />
@@ -432,7 +432,7 @@ Please analyze the structure and content. Look for:
                          <label className="text-xs font-medium text-slate-400">Username</label>
                          <input 
                            type="text"
-                           className="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+                           className="w-full bg-slate-800 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
                            value={formData.snmpUser}
                            onChange={e => setFormData({...formData, snmpUser: e.target.value})}
                          />
@@ -440,7 +440,7 @@ Please analyze the structure and content. Look for:
                       <div className="col-span-2 space-y-1">
                          <label className="text-xs font-medium text-slate-400">Auth Protocol</label>
                          <select 
-                           className="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+                           className="w-full bg-slate-800 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
                            value={formData.snmpAuth}
                            onChange={e => setFormData({...formData, snmpAuth: e.target.value})}
                          >
@@ -451,7 +451,7 @@ Please analyze the structure and content. Look for:
                       <div className="col-span-2 space-y-1">
                          <label className="text-xs font-medium text-slate-400">Priv Protocol</label>
                          <select 
-                           className="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+                           className="w-full bg-slate-800 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
                            value={formData.snmpPriv}
                            onChange={e => setFormData({...formData, snmpPriv: e.target.value})}
                          >
@@ -471,7 +471,7 @@ Please analyze the structure and content. Look for:
                  type="button"
                  onClick={handleTestConnection}
                  disabled={loading}
-                 className="flex-1 w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
+                 className="flex-1 w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-md font-medium text-sm transition-colors flex items-center justify-center gap-2"
                >
                  {loading ? <RotateCw className="w-4 h-4 animate-spin"/> : <Radio className="w-4 h-4" />}
                  Test Connection
@@ -480,7 +480,7 @@ Please analyze the structure and content. Look for:
                <button
                  type="submit"
                  disabled={loading || !formData.name || !formData.ip}
-                 className={`flex-1 w-full px-4 py-2 rounded-lg font-bold text-white shadow-lg flex items-center justify-center gap-2 transition-all text-sm ${
+                 className={`flex-1 w-full px-4 py-2 rounded-md font-bold text-white shadow-lg flex items-center justify-center gap-2 transition-all text-sm ${
                    testStatus === 'success' 
                     ? 'bg-blue-600 hover:bg-blue-500 hover:scale-105'
                     : 'bg-blue-600/50 hover:bg-blue-600'
@@ -492,7 +492,7 @@ Please analyze the structure and content. Look for:
             </div>
             
             {statusMessage && (
-              <div className={`p-3 rounded-lg text-sm border ${
+              <div className={`p-3 rounded-md text-sm border ${
                 testStatus === 'success' || submitStatus === 'success' 
                   ? 'bg-green-900/20 border-green-500/50 text-green-300' :
                 testStatus === 'error' || submitStatus === 'error' 
@@ -509,16 +509,16 @@ Please analyze the structure and content. Look for:
         <div className="lg:col-span-1 space-y-6">
           
           {/* Card: Bulk Import */}
-          <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-xl">
+          <div className="bg-slate-800 rounded-lg p-5 border border-slate-700 shadow-xl">
              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-emerald-600/20 rounded-lg">
+                <div className="p-2 bg-emerald-600/20 rounded-md">
                   <FileSpreadsheet className="w-5 h-5 text-emerald-400" />
                 </div>
                 <h3 className="font-bold text-white">Bulk Operations</h3>
              </div>
              
              <div className="space-y-4">
-                <div className="p-4 bg-slate-900 rounded-lg border border-dashed border-slate-600 text-center">
+                <div className="p-4 bg-slate-900 rounded-md border border-dashed border-slate-600 text-center">
                    <p className="text-xs text-slate-400 mb-3">
                      Import devices via Excel (CSV)
                    </p>
@@ -534,13 +534,13 @@ Please analyze the structure and content. Look for:
                    <div className="flex gap-2 justify-center">
                      <button 
                         onClick={() => fileInputRef.current?.click()}
-                        className="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-medium text-white flex items-center gap-2"
+                        className="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded-md text-xs font-medium text-white flex items-center gap-2"
                      >
                        <UploadCloud className="w-3 h-3" /> Select File
                      </button>
                      <button 
                         onClick={handleDownloadTemplate}
-                        className="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg text-xs font-medium text-slate-300 flex items-center gap-2"
+                        className="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-md text-xs font-medium text-slate-300 flex items-center gap-2"
                      >
                        <FileDown className="w-3 h-3" /> Template
                      </button>
@@ -549,7 +549,7 @@ Please analyze the structure and content. Look for:
                 </div>
 
                 {importError && (
-                  <div className="bg-red-900/20 border border-red-900/50 rounded-lg p-3">
+                  <div className="bg-red-900/20 border border-red-900/50 rounded-md p-3">
                      <p className="text-red-300 text-xs mb-2">{importError}</p>
                      <button 
                        onClick={handleAnalyzeError}
@@ -566,7 +566,7 @@ Please analyze the structure and content. Look for:
                        <span className="text-xs text-emerald-400 font-bold">{importedDevices.length} devices found</span>
                        <button onClick={() => setImportedDevices([])} className="text-[10px] text-slate-500 hover:text-red-400">Clear</button>
                     </div>
-                    <div className="max-h-60 overflow-y-auto bg-slate-900 rounded-lg border border-slate-700 divide-y divide-slate-800 mb-3 custom-scrollbar">
+                    <div className="max-h-60 overflow-y-auto bg-slate-900 rounded-md border border-slate-700 divide-y divide-slate-800 mb-3 custom-scrollbar">
                        {importedDevices.map((d, idx) => (
                          <div key={d.id} className="p-2 flex justify-between items-center group">
                             <div className="overflow-hidden">
@@ -581,7 +581,7 @@ Please analyze the structure and content. Look for:
                     </div>
                     <button 
                       onClick={confirmImport}
-                      className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-2"
+                      className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md text-xs font-bold flex items-center justify-center gap-2"
                     >
                       <FileUp className="w-3 h-3" /> Import All
                     </button>
@@ -591,9 +591,9 @@ Please analyze the structure and content. Look for:
           </div>
 
           {/* Card: System Security */}
-          <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-xl">
+          <div className="bg-slate-800 rounded-lg p-5 border border-slate-700 shadow-xl">
              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-rose-600/20 rounded-lg">
+                <div className="p-2 bg-rose-600/20 rounded-md">
                   <LockKeyhole className="w-5 h-5 text-rose-400" />
                 </div>
                 <div>
@@ -631,7 +631,7 @@ Please analyze the structure and content. Look for:
           </div>
 
           {/* Tips Card */}
-          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
              <h4 className="text-xs font-bold text-slate-300 mb-2 uppercase">Quick Tips</h4>
              <ul className="text-xs text-slate-400 space-y-2 list-disc pl-4">
                 <li>Use <span className="text-slate-200">public</span> as community string for testing.</li>

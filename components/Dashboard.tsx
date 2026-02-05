@@ -269,7 +269,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
       
       {/* KIOSK MODE: MINI ALERT NOTIFICATION (Top Right) */}
       {isKioskActive && activeAlertDevice && (
-        <div className="fixed top-24 right-6 z-[60] w-80 bg-slate-900/95 backdrop-blur-md border-l-4 border-red-500 rounded-r-lg shadow-2xl overflow-hidden animate-slide-in-right transform transition-all duration-500">
+        <div className="fixed top-24 right-6 z-[60] w-80 bg-slate-900/95 backdrop-blur-md border-l-4 border-red-500 rounded-r-md shadow-2xl overflow-hidden animate-slide-in-right transform transition-all duration-500">
            <div className="p-4 relative">
               <div className="absolute top-0 right-0 p-2 opacity-50">
                  <div className="flex gap-1">
@@ -280,7 +280,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
               </div>
 
               <div className="flex items-start gap-3">
-                 <div className="p-2 bg-red-900/50 rounded-lg shrink-0 animate-pulse">
+                 <div className="p-2 bg-red-900/50 rounded-md shrink-0 animate-pulse">
                     <AlertTriangle className="w-6 h-6 text-red-500" />
                  </div>
                  <div className="flex-1 min-w-0">
@@ -330,23 +330,23 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
         {/* Control Bar */}
         <div className="flex gap-2">
           {/* View Toggles */}
-          <div className="bg-slate-800 p-1 rounded-lg border border-slate-700 flex gap-1 shadow-sm overflow-x-auto max-w-full">
-            <button onClick={() => setViewMode('overview')} className={`px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${viewMode === 'overview' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>
+          <div className="bg-slate-800 p-1 rounded-md border border-slate-700 flex gap-1 shadow-sm overflow-x-auto max-w-full">
+            <button onClick={() => setViewMode('overview')} className={`px-4 py-2 rounded text-sm font-medium transition-all flex items-center gap-2 ${viewMode === 'overview' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>
               <Activity className="w-4 h-4" /> <span className="hidden sm:inline">Overview</span>
             </button>
-            <button onClick={() => setViewMode('topology')} className={`px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${viewMode === 'topology' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>
+            <button onClick={() => setViewMode('topology')} className={`px-4 py-2 rounded text-sm font-medium transition-all flex items-center gap-2 ${viewMode === 'topology' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>
               <Share2 className="w-4 h-4" /> <span className="hidden sm:inline">Topology</span>
             </button>
-            <button onClick={() => setViewMode('location')} className={`px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${viewMode === 'location' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>
+            <button onClick={() => setViewMode('location')} className={`px-4 py-2 rounded text-sm font-medium transition-all flex items-center gap-2 ${viewMode === 'location' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>
               <MapPin className="w-4 h-4" /> <span className="hidden sm:inline">Locations</span>
             </button>
           </div>
 
           {/* Kiosk Button */}
-          <div className="bg-slate-800 p-1 rounded-lg border border-slate-700 flex gap-1 shadow-sm">
+          <div className="bg-slate-800 p-1 rounded-md border border-slate-700 flex gap-1 shadow-sm">
              <button 
                onClick={handleOpenKioskSettings}
-               className={`p-2 rounded-md transition-all ${isKioskActive ? 'bg-indigo-600 text-white animate-pulse' : 'text-slate-400 hover:bg-slate-700 hover:text-white'}`}
+               className={`p-2 rounded transition-all ${isKioskActive ? 'bg-indigo-600 text-white animate-pulse' : 'text-slate-400 hover:bg-slate-700 hover:text-white'}`}
                title="Configure Kiosk Mode"
              >
                <MonitorPlay className="w-5 h-5" />
@@ -358,7 +358,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
       {/* Auth Modal for Kiosk Settings */}
       {isAuthModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fade-in">
-           <div className="bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm border border-slate-700 p-6">
+           <div className="bg-slate-800 rounded-lg shadow-2xl w-full max-w-sm border border-slate-700 p-6">
               <div className="text-center mb-6">
                  <div className="w-12 h-12 bg-rose-600/20 rounded-full flex items-center justify-center mx-auto mb-3">
                     <LockKeyhole className="w-6 h-6 text-rose-500" />
@@ -372,7 +372,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
                    type="password"
                    autoFocus
                    placeholder="Enter PIN (Default: 0000)"
-                   className="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-center text-white tracking-[0.5em] text-lg focus:ring-2 focus:ring-rose-500 outline-none"
+                   className="w-full bg-slate-900 border border-slate-600 rounded-md px-4 py-2.5 text-center text-white tracking-[0.5em] text-lg focus:ring-2 focus:ring-rose-500 outline-none"
                    maxLength={8}
                    value={authPin}
                    onChange={(e) => setAuthPin(e.target.value)}
@@ -388,13 +388,13 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
                     <button 
                       type="button" 
                       onClick={() => setIsAuthModalOpen(false)}
-                      className="flex-1 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium"
+                      className="flex-1 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-md text-sm font-medium"
                     >
                       Cancel
                     </button>
                     <button 
                       type="submit" 
-                      className="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-sm font-bold"
+                      className="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-md text-sm font-bold"
                     >
                       Unlock
                     </button>
@@ -407,7 +407,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
       {/* Kiosk Settings Modal */}
       {isKioskSettingsOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-           <div className="bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md border border-slate-700">
+           <div className="bg-slate-800 rounded-lg shadow-2xl w-full max-w-md border border-slate-700">
               <div className="p-5 border-b border-slate-700 flex justify-between items-center">
                  <h3 className="font-bold text-white flex items-center gap-2">
                    <MonitorPlay className="w-5 h-5 text-indigo-400" /> Kiosk Configuration
@@ -432,7 +432,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
 
                  {isKioskActive && (
                    <div className="space-y-4 animate-fade-in">
-                      <div className="bg-slate-900 p-4 rounded-lg space-y-3">
+                      <div className="bg-slate-900 p-4 rounded-md space-y-3">
                          <div className="flex justify-between items-center">
                             <label className="text-sm text-slate-300 flex items-center gap-2">
                                <RotateCw className="w-4 h-4" /> Cycle Interval (sec)
@@ -441,7 +441,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
                               type="number" min="5" max="300"
                               value={cycleInterval}
                               onChange={(e) => setCycleInterval(parseInt(e.target.value))}
-                              className="w-20 bg-slate-800 border border-slate-700 rounded p-1 text-center text-white"
+                              className="w-20 bg-slate-800 border border-slate-700 rounded text-center text-white"
                             />
                          </div>
                          <div className="flex justify-between items-center">
@@ -498,8 +498,8 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
                  )}
               </div>
               
-              <div className="p-4 bg-slate-900/50 rounded-b-2xl border-t border-slate-700 flex justify-end">
-                 <button onClick={() => setIsKioskSettingsOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium">
+              <div className="p-4 bg-slate-900/50 rounded-b-lg border-t border-slate-700 flex justify-end">
+                 <button onClick={() => setIsKioskSettingsOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md text-sm font-medium">
                     Done
                  </button>
               </div>
@@ -511,42 +511,42 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
         <>
           {/* Top Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex items-center justify-between">
+            <div className="bg-slate-800 p-3 rounded-lg border border-slate-700 shadow-lg flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-sm font-medium">Total Devices</p>
                 <h3 className="text-2xl font-bold text-white">{stats.totalDevices}</h3>
               </div>
-              <div className="p-3 bg-blue-500/10 rounded-lg">
+              <div className="p-3 bg-blue-500/10 rounded-md">
                 <Server className="w-6 h-6 text-blue-500" />
               </div>
             </div>
             
-            <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex items-center justify-between">
+            <div className="bg-slate-800 p-3 rounded-lg border border-slate-700 shadow-lg flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-sm font-medium">Systems Online</p>
                 <h3 className="text-2xl font-bold text-green-400">{stats.online}</h3>
               </div>
-              <div className="p-3 bg-green-500/10 rounded-lg">
+              <div className="p-3 bg-green-500/10 rounded-md">
                 <CheckCircle className="w-6 h-6 text-green-500" />
               </div>
             </div>
 
-            <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex items-center justify-between">
+            <div className="bg-slate-800 p-3 rounded-lg border border-slate-700 shadow-lg flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-sm font-medium">Critical Alerts</p>
                 <h3 className="text-2xl font-bold text-red-500">{stats.critical + stats.offline}</h3>
               </div>
-              <div className="p-3 bg-red-500/10 rounded-lg">
+              <div className="p-3 bg-red-500/10 rounded-md">
                 <AlertTriangle className="w-6 h-6 text-red-500" />
               </div>
             </div>
 
-            <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex items-center justify-between">
+            <div className="bg-slate-800 p-3 rounded-lg border border-slate-700 shadow-lg flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-sm font-medium">Avg CPU Load</p>
                 <h3 className="text-2xl font-bold text-purple-400">{stats.avgCpuLoad.toFixed(1)}%</h3>
               </div>
-              <div className="p-3 bg-purple-500/10 rounded-lg">
+              <div className="p-3 bg-purple-500/10 rounded-md">
                 <Cpu className="w-6 h-6 text-purple-500" />
               </div>
             </div>
@@ -554,7 +554,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Main Chart */}
-            <div className="lg:col-span-2 bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+            <div className="lg:col-span-2 bg-slate-800 p-5 rounded-lg border border-slate-700 shadow-lg">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                 <Activity className="w-5 h-5 text-blue-400" /> System Load History
               </h3>
@@ -571,7 +571,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
                     <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} />
                     <YAxis stroke="#94a3b8" fontSize={12} />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#fff' }} 
+                      contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '6px', color: '#fff' }} 
                       itemStyle={{ color: '#fff' }}
                     />
                     <Area type="monotone" dataKey="cpu" stroke="#8884d8" fillOpacity={1} fill="url(#colorCpu)" name="Avg CPU %" />
@@ -581,7 +581,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
             </div>
 
             {/* Status Breakdown */}
-            <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+            <div className="bg-slate-800 p-5 rounded-lg border border-slate-700 shadow-lg">
               <h3 className="text-lg font-semibold text-white mb-4">Device Status</h3>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
@@ -598,7 +598,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
                       ))}
                     </Pie>
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#fff' }}
+                      contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '6px', color: '#fff' }}
                     />
                   </PieChart>
                 </ResponsiveContainer>
@@ -612,7 +612,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
           </div>
 
           {/* Critical Alerts List */}
-          <div className="bg-slate-800 rounded-xl border border-slate-700 shadow-lg overflow-hidden">
+          <div className="bg-slate-800 rounded-lg border border-slate-700 shadow-lg overflow-hidden">
             <div className="p-4 border-b border-slate-700 flex justify-between items-center">
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 <Zap className="w-5 h-5 text-yellow-500" /> Active Alerts
@@ -662,7 +662,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
           
           {/* Protocol Distribution & Info */}
           <div className="lg:col-span-1 space-y-6">
-             <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+             <div className="bg-slate-800 p-5 rounded-lg border border-slate-700 shadow-lg">
                 <h3 className="text-lg font-semibold text-white mb-4">Protocol Usage</h3>
                 <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
@@ -679,7 +679,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
                         ))}
                       </Pie>
                       <Tooltip 
-                        contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#fff' }}
+                        contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '6px', color: '#fff' }}
                       />
                     </PieChart>
                   </ResponsiveContainer>
@@ -697,7 +697,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
                 </div>
              </div>
 
-             <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+             <div className="bg-slate-800 p-5 rounded-lg border border-slate-700 shadow-lg">
                 <h3 className="text-lg font-semibold text-white mb-2">Security Advisory</h3>
                 <p className="text-sm text-slate-400 mb-4">Recommendations based on active protocols.</p>
                 
@@ -737,7 +737,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
           {/* Topology Swimlanes */}
           <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4">
              {protocolStats.map(group => (
-               <div key={group.id} className="bg-slate-800/50 rounded-xl border border-slate-700 flex flex-col h-fit">
+               <div key={group.id} className="bg-slate-800/50 rounded-lg border border-slate-700 flex flex-col h-fit">
                   {/* Column Header */}
                   <div className="p-4 border-b border-slate-700" style={{ borderTop: `4px solid ${group.color}` }}>
                      <div className="flex items-center justify-between mb-1">
@@ -759,7 +759,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
                        </div>
                      ) : (
                        group.devices.map(device => (
-                         <div key={device.id} className="bg-slate-900 p-3 rounded-lg border border-slate-700 hover:border-slate-500 transition-colors group">
+                         <div key={device.id} className="bg-slate-900 p-3 rounded-md border border-slate-700 hover:border-slate-500 transition-colors group">
                             <div className="flex justify-between items-start mb-2">
                                <div className="flex items-center gap-2">
                                   <div className={`w-2 h-2 rounded-full ${
@@ -796,11 +796,11 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
         /* Location View */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-in">
            {locationStats.map(loc => (
-             <div key={loc.name} className="bg-slate-800 rounded-xl border border-slate-700 shadow-lg flex flex-col hover:border-slate-500 transition-all">
-                <div className="p-4 border-b border-slate-700 bg-slate-800/50 rounded-t-xl">
+             <div key={loc.name} className="bg-slate-800 rounded-lg border border-slate-700 shadow-lg flex flex-col hover:border-slate-500 transition-all">
+                <div className="p-4 border-b border-slate-700 bg-slate-800/50 rounded-t-lg">
                    <div className="flex justify-between items-start">
                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-600/20 rounded-lg">
+                        <div className="p-2 bg-blue-600/20 rounded-md">
                            <MapPin className="w-5 h-5 text-blue-400" />
                         </div>
                         <div>
@@ -857,7 +857,7 @@ const Dashboard: React.FC<DashboardProps> = ({ devices, stats, isKioskActive, se
              </div>
            ))}
            {locationStats.length === 0 && (
-             <div className="col-span-full p-12 text-center text-slate-500 border-2 border-dashed border-slate-700 rounded-xl">
+             <div className="col-span-full p-12 text-center text-slate-500 border-2 border-dashed border-slate-700 rounded-lg">
                 <MapPin className="w-12 h-12 mx-auto mb-4 opacity-50" />
                 <h3 className="text-lg font-bold text-slate-400">No Locations Found</h3>
                 <p>Assign locations to your devices to visualize them on the map.</p>

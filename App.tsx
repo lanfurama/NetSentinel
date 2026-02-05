@@ -228,8 +228,8 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-slate-900 text-slate-200 flex flex-col md:flex-row font-sans">
       {/* Sidebar Navigation */}
       <aside className={`w-full md:w-64 bg-slate-950 border-r border-slate-800 flex flex-col shrink-0 transition-all ${isKioskActive ? 'md:w-20' : ''}`}>
-        <div className={`p-6 border-b border-slate-800 flex items-center gap-3 ${isKioskActive ? 'justify-center' : ''}`}>
-          <div className="bg-blue-600 p-2 rounded-lg shrink-0">
+        <div className={`p-4 border-b border-slate-800 flex items-center gap-3 ${isKioskActive ? 'justify-center' : ''}`}>
+          <div className="bg-blue-600 p-2 rounded-md shrink-0">
             <Activity className="w-6 h-6 text-white" />
           </div>
           {!isKioskActive && (
@@ -239,10 +239,10 @@ const App: React.FC = () => {
           )}
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-3 space-y-2">
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md transition-all ${
               activeTab === 'dashboard' 
                 ? 'bg-blue-600/10 text-blue-400 border border-blue-600/20' 
                 : 'text-slate-400 hover:bg-slate-900 hover:text-white'
@@ -256,7 +256,7 @@ const App: React.FC = () => {
           {!isKioskActive && (
             <button
               onClick={() => setActiveTab('devices')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md transition-all ${
                 activeTab === 'devices' 
                   ? 'bg-blue-600/10 text-blue-400 border border-blue-600/20' 
                   : 'text-slate-400 hover:bg-slate-900 hover:text-white'
@@ -273,7 +273,7 @@ const App: React.FC = () => {
           {!isKioskActive && currentUser.role === 'admin' && (
             <button
               onClick={() => setActiveTab('admin')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md transition-all ${
                 activeTab === 'admin' 
                   ? 'bg-blue-600/10 text-blue-400 border border-blue-600/20' 
                   : 'text-slate-400 hover:bg-slate-900 hover:text-white'
@@ -286,7 +286,7 @@ const App: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('ai')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md transition-all ${
               activeTab === 'ai' 
                 ? 'bg-purple-600/10 text-purple-400 border border-purple-600/20' 
                 : 'text-slate-400 hover:bg-slate-900 hover:text-white'
@@ -299,7 +299,7 @@ const App: React.FC = () => {
         </nav>
 
         {!isKioskActive && (
-          <div className="p-4 border-t border-slate-800 space-y-3">
+          <div className="p-3 border-t border-slate-800 space-y-3">
              {/* User Profile Info */}
              <div className="flex items-center gap-3 px-2">
                 <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center border border-slate-700">
@@ -313,7 +313,7 @@ const App: React.FC = () => {
              
              {/* Logout & Status */}
              <div className="flex gap-2">
-                <div className="bg-slate-900 rounded-lg p-2 flex-1 text-xs text-slate-500 flex items-center gap-2">
+                <div className="bg-slate-900 rounded-md p-2 flex-1 text-xs text-slate-500 flex items-center gap-2">
                    <span className="relative flex h-2 w-2 shrink-0">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
@@ -322,7 +322,7 @@ const App: React.FC = () => {
                 </div>
                 <button 
                   onClick={handleLogout}
-                  className="bg-red-900/20 hover:bg-red-900/40 border border-red-900/50 text-red-400 p-2 rounded-lg transition-colors"
+                  className="bg-red-900/20 hover:bg-red-900/40 border border-red-900/50 text-red-400 p-2 rounded-md transition-colors"
                   title="Logout"
                 >
                    <LogOut className="w-4 h-4" />
@@ -336,7 +336,7 @@ const App: React.FC = () => {
           <div className="p-2 border-t border-slate-800">
             <button 
               onClick={handleLogout}
-              className="w-full bg-red-900/20 hover:bg-red-900/40 border border-red-900/50 text-red-400 p-2 rounded-lg transition-colors flex items-center justify-center"
+              className="w-full bg-red-900/20 hover:bg-red-900/40 border border-red-900/50 text-red-400 p-2 rounded-md transition-colors flex items-center justify-center"
               title="Exit Kiosk Mode & Logout"
             >
               <LogOut className="w-5 h-5" />
@@ -347,7 +347,7 @@ const App: React.FC = () => {
 
       {/* Main Content Area */}
       <main className="flex-1 overflow-y-auto h-screen bg-slate-900 relative">
-         <div className="max-w-7xl mx-auto p-4 md:p-8">
+         <div className="max-w-7xl mx-auto p-4 md:p-5">
             {/* Header for Mobile/Context - Hide in Kiosk */}
             {!isKioskActive && (
               <header className="flex md:hidden justify-between items-center mb-6">
@@ -365,7 +365,7 @@ const App: React.FC = () => {
 
             {/* API Error Display */}
             {apiError && (
-              <div className="mb-4 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+              <div className="mb-4 p-3 bg-red-900/20 border border-red-500/30 rounded-md">
                 <div className="flex items-center justify-between">
                   <p className="text-red-300 text-sm">{apiError}</p>
                   <button 
@@ -404,7 +404,7 @@ const App: React.FC = () => {
 
             {activeTab === 'ai' && (
               <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
-                 <div className="bg-gradient-to-br from-indigo-900 to-purple-900 rounded-2xl p-8 border border-indigo-700/50 shadow-2xl relative overflow-hidden">
+                 <div className="bg-gradient-to-br from-indigo-900 to-purple-900 rounded-lg p-5 border border-indigo-700/50 shadow-2xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
                     <div className="relative z-10">
                       <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
@@ -419,7 +419,7 @@ const App: React.FC = () => {
                       <button 
                         onClick={handleAiAnalysis}
                         disabled={isAnalyzing || devices.length === 0}
-                        className={`px-6 py-3 rounded-xl font-bold text-white shadow-lg transition-all flex items-center gap-2 ${
+                        className={`px-6 py-2.5 rounded-md font-bold text-white shadow-lg transition-all flex items-center gap-2 ${
                           isAnalyzing || devices.length === 0
                           ? 'bg-slate-700 cursor-not-allowed opacity-50' 
                           : 'bg-white text-indigo-900 hover:bg-indigo-50 hover:scale-105'
@@ -440,7 +440,7 @@ const App: React.FC = () => {
                  </div>
 
                  {aiReport && (
-                   <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-xl">
+                   <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 shadow-xl">
                       <h3 className="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2">Analysis Result</h3>
                       <div className="prose prose-invert prose-sm max-w-none">
                         <pre className="whitespace-pre-wrap font-sans text-slate-300">
@@ -484,7 +484,7 @@ const App: React.FC = () => {
                setChatInitialContext('');
                setIsChatOpen(true);
              }}
-             className="fixed bottom-6 right-6 p-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full shadow-2xl transition-all hover:scale-110 z-40 group"
+             className="fixed bottom-6 right-6 p-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full shadow-2xl transition-all hover:scale-110 z-40 group"
            >
              <MessageSquare className="w-6 h-6" />
              <span className="absolute right-full mr-4 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity pointer-events-none border border-slate-700">

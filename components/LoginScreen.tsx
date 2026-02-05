@@ -59,10 +59,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
       <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
       <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden relative z-10 animate-fade-in">
-        <div className="p-8 pb-6 border-b border-slate-800 bg-slate-900/50">
+      <div className="bg-slate-900 border border-slate-800 rounded-lg shadow-2xl w-full max-w-md overflow-hidden relative z-10 animate-fade-in">
+        <div className="p-5 pb-4 border-b border-slate-800 bg-slate-900/50">
            <div className="flex justify-center mb-6">
-             <div className={`w-16 h-16 rounded-xl flex items-center justify-center border shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all ${mode === 'login' ? 'bg-blue-600/20 border-blue-500/30' : 'bg-indigo-600/20 border-indigo-500/30'}`}>
+             <div className={`w-16 h-16 rounded-lg flex items-center justify-center border shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all ${mode === 'login' ? 'bg-blue-600/20 border-blue-500/30' : 'bg-indigo-600/20 border-indigo-500/30'}`}>
                {mode === 'login' ? <Activity className="w-8 h-8 text-blue-400" /> : <MonitorPlay className="w-8 h-8 text-indigo-400" />}
              </div>
            </div>
@@ -76,21 +76,21 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         <div className="flex p-2 bg-slate-950/50 border-b border-slate-800">
           <button 
             onClick={() => { setMode('login'); setError(''); }}
-            className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'login' ? 'bg-slate-800 text-white shadow' : 'text-slate-500 hover:text-slate-300'}`}
+            className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${mode === 'login' ? 'bg-slate-800 text-white shadow' : 'text-slate-500 hover:text-slate-300'}`}
           >
             Admin Login
           </button>
           <button 
             onClick={() => { setMode('kiosk'); setError(''); }}
-            className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'kiosk' ? 'bg-slate-800 text-white shadow' : 'text-slate-500 hover:text-slate-300'}`}
+            className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${mode === 'kiosk' ? 'bg-slate-800 text-white shadow' : 'text-slate-500 hover:text-slate-300'}`}
           >
             Kiosk Mode
           </button>
         </div>
 
-        <form onSubmit={handleLogin} className="p-8 space-y-5">
+        <form onSubmit={handleLogin} className="p-5 space-y-4">
            {error && (
-             <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-3 text-red-300 text-xs text-center font-medium animate-pulse">
+             <div className="bg-red-900/20 border border-red-500/30 rounded-md p-3 text-red-300 text-xs text-center font-medium animate-pulse">
                {error}
              </div>
            )}
@@ -104,7 +104,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                    <input 
                      type="text" 
                      required
-                     className="w-full bg-slate-950 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all placeholder-slate-600"
+                     className="w-full bg-slate-950 border border-slate-700 rounded-md py-2 pl-10 pr-4 text-white focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all placeholder-slate-600"
                      placeholder="Enter username"
                      value={username}
                      onChange={(e) => setUsername(e.target.value)}
@@ -119,7 +119,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                    <input 
                      type="password" 
                      required
-                     className="w-full bg-slate-950 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all placeholder-slate-600"
+                     className="w-full bg-slate-950 border border-slate-700 rounded-md py-2 pl-10 pr-4 text-white focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all placeholder-slate-600"
                      placeholder="••••••••"
                      value={password}
                      onChange={(e) => setPassword(e.target.value)}
@@ -137,7 +137,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                      required
                      autoFocus
                      maxLength={8}
-                     className="w-full bg-slate-950 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white text-center tracking-[0.5em] text-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all placeholder-slate-800"
+                     className="w-full bg-slate-950 border border-slate-700 rounded-md py-2 pl-10 pr-4 text-white text-center tracking-[0.5em] text-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all placeholder-slate-800"
                      placeholder="0000"
                      value={kioskPin}
                      onChange={(e) => setKioskPin(e.target.value)}
@@ -151,7 +151,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
              <button 
                type="submit" 
                disabled={loading}
-               className={`w-full py-3 rounded-xl font-bold text-white shadow-lg flex items-center justify-center gap-2 transition-all ${
+               className={`w-full py-2.5 rounded-md font-bold text-white shadow-lg flex items-center justify-center gap-2 transition-all ${
                  loading 
                   ? 'bg-slate-700 cursor-wait' 
                   : mode === 'login'
@@ -180,7 +180,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
            </div>
         </form>
 
-        <div className="bg-slate-950 p-3 border-t border-slate-800 text-center">
+        <div className="bg-slate-950 p-2.5 border-t border-slate-800 text-center">
            <div className="flex items-center justify-center gap-2 text-[10px] text-slate-500">
              <ShieldCheck className="w-3 h-3 text-emerald-500" />
              <span>Encrypted Connection • Version 2.0.1</span>

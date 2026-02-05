@@ -69,13 +69,13 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
 
   return (
     <div className="space-y-6 h-full flex flex-col">
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-sm">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-800 p-3 rounded-lg border border-slate-700 shadow-sm">
         <div className="relative flex-1 w-full md:w-auto">
           <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
           <input
             type="text"
             placeholder="Search devices by Name or IP..."
-            className="w-full bg-slate-900 border border-slate-700 text-slate-200 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-slate-900 border border-slate-700 text-slate-200 pl-10 pr-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -85,7 +85,7 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
             <button
               key={type}
               onClick={() => setFilterType(type as any)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+              className={`px-4 py-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors ${
                 filterType === type 
                   ? 'bg-blue-600 text-white' 
                   : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
@@ -96,7 +96,7 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
           ))}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors ml-auto md:ml-2 whitespace-nowrap"
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md text-sm font-medium transition-colors ml-auto md:ml-2 whitespace-nowrap"
           >
             <Plus className="w-4 h-4" /> Add Device
           </button>
@@ -116,7 +116,7 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
           </p>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md text-sm font-medium transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Device
           </button>
@@ -124,12 +124,12 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 overflow-y-auto pb-4 custom-scrollbar">
           {filteredDevices.map(device => (
-          <div key={device.id} className={`relative bg-slate-800 rounded-xl border ${
+          <div key={device.id} className={`relative bg-slate-800 rounded-lg border ${
             device.status === DeviceStatus.OFFLINE ? 'border-red-900/50' :
             device.status === DeviceStatus.CRITICAL ? 'border-red-900/50' :
             device.status === DeviceStatus.WARNING ? 'border-yellow-900/50' :
             'border-slate-700'
-          } p-5 shadow-lg hover:shadow-xl transition-all group`}>
+          } p-4 shadow-lg hover:shadow-xl transition-all group`}>
              <button 
                 onClick={() => onRemoveDevice(device.id)}
                 className="absolute top-4 right-4 p-2 text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -140,7 +140,7 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
 
              <div className="flex items-start justify-between mb-4">
                <div className="flex items-center gap-3">
-                 <div className={`p-3 rounded-lg ${
+                 <div className={`p-3 rounded-md ${
                    device.type === DeviceType.SERVER ? 'bg-indigo-500/20 text-indigo-400' :
                    device.type === DeviceType.NETWORK ? 'bg-orange-500/20 text-orange-400' :
                    'bg-cyan-500/20 text-cyan-400'
@@ -177,7 +177,7 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
              </div>
 
              <div className="grid grid-cols-2 gap-4 mt-4">
-                <div className="bg-slate-900/50 p-3 rounded-lg">
+                <div className="bg-slate-900/50 p-3 rounded-md">
                   <div className="flex items-center gap-2 text-slate-400 text-xs mb-1">
                     <Cpu className="w-3 h-3" /> CPU Load
                   </div>
@@ -194,7 +194,7 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
                   </div>
                 </div>
 
-                <div className="bg-slate-900/50 p-3 rounded-lg">
+                <div className="bg-slate-900/50 p-3 rounded-md">
                   <div className="flex items-center gap-2 text-slate-400 text-xs mb-1">
                     <HardDrive className="w-3 h-3" /> Memory
                   </div>
@@ -223,18 +223,18 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md border border-slate-700">
-            <div className="p-6 border-b border-slate-700">
+          <div className="bg-slate-800 rounded-lg shadow-2xl w-full max-w-md border border-slate-700">
+            <div className="p-5 border-b border-slate-700">
               <h2 className="text-xl font-bold text-white">Add New Device</h2>
               <p className="text-sm text-slate-400">Configure SNMP or IP monitoring agent</p>
             </div>
-            <form onSubmit={handleAdd} className="p-6 space-y-4">
+            <form onSubmit={handleAdd} className="p-5 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">Device Name</label>
                 <input
                   required
                   type="text"
-                  className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                   value={newDevice.name}
                   onChange={e => setNewDevice({...newDevice, name: e.target.value})}
                   placeholder="e.g., Web-Server-01"
@@ -246,7 +246,7 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
                   <input
                     required
                     type="text"
-                    className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                     value={newDevice.ip}
                     onChange={e => setNewDevice({...newDevice, ip: e.target.value})}
                     placeholder="192.168.1.10"
@@ -255,7 +255,7 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1">Type</label>
                   <select
-                    className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                     value={newDevice.type}
                     onChange={e => setNewDevice({...newDevice, type: e.target.value as DeviceType})}
                   >
@@ -266,7 +266,7 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">Location</label>
                 <select
-                  className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                   value={newDevice.location}
                   onChange={e => setNewDevice({...newDevice, location: e.target.value})}
                 >
@@ -279,7 +279,7 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
                 <label className="block text-sm font-medium text-slate-300 mb-1">SNMP Community (Optional)</label>
                 <input
                   type="password"
-                  className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                   value={newDevice.snmpCommunity}
                   onChange={e => setNewDevice({...newDevice, snmpCommunity: e.target.value})}
                   placeholder="public"
@@ -289,13 +289,13 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({ devices, onAddDevice, onR
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium"
+                  className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-md text-sm font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium"
                 >
                   Add Device
                 </button>
